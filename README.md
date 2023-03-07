@@ -23,6 +23,22 @@ You can publish the config file with:
 php artisan vendor:publish --provider="NotificationTracker\ServiceProvider" --tag="config"
 ```
 
+## Configuration
+
+```php
+public function register()
+    {
+        // cancel default migrations files
+        \NotificationTracker\NotificationTracker::ignoreMigrations();
+        // cancel default web routes implementation
+        \NotificationTracker\NotificationTracker::ignoreRoutes();
+        // change class names what stored in database
+        \NotificationTracker\NotificationTracker::classMap([
+            'registration_confirmation' => RegistrationNotification::class,
+        ]);
+    }
+```
+
 ## Usage
 
 For your notification please implement Interface `Trackable`, use trait `HasTracker`. 
