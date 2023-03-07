@@ -17,7 +17,8 @@ class MailConverter
     public function __construct(
         protected TrackedChannel $tracker,
         protected Email          $email,
-    ) {
+    )
+    {
     }
 
     public function format()
@@ -25,7 +26,7 @@ class MailConverter
         $emailBody = $this->email->getBody();
         if (
             ($emailBody instanceof (AlternativePart::class)) ||
-            ($emailBody instanceof (MixedPart::class))       ||
+            ($emailBody instanceof (MixedPart::class)) ||
             ($emailBody instanceof (RelatedPart::class))
         ) {
             $newParts = [];
@@ -70,11 +71,11 @@ class MailConverter
         if ($emailBody->getMediaSubtype() == 'html') {
             $this->email->setBody(
                 new TextPart(
-                $this->makeTrackable($emailBody->getBody()),
-                $this->email->getHtmlCharset(),
-                $emailBody->getMediaSubtype(),
-                null
-            )
+                    $this->makeTrackable($emailBody->getBody()),
+                    $this->email->getHtmlCharset(),
+                    $emailBody->getMediaSubtype(),
+                    null
+                )
             );
 
             return;
@@ -96,8 +97,10 @@ class MailConverter
             return $content;
         }
 
-        $linebreak = Str::random();
-        $content   = str_replace("\n", $linebreak, $content);
+        do {
+            $br = Str::random();
+        } while (str_contains($content, $br));
+        $content = str_replace("\n", $br, $content);
 
         if (preg_match('/^(.*<body[^>]*>)(.*)$/im', $content, $matches)) {
             $content = $matches[1] . $this->tracker->getPixelImageHtml() . $matches[2];
@@ -105,7 +108,7 @@ class MailConverter
             $content .= $this->tracker->getPixelImageHtml();
         }
 
-        $content = str_replace($linebreak, "\n", $content);
+        $content = str_replace($br, "\n", $content);
 
         $this->pixelAdded = true;
 
