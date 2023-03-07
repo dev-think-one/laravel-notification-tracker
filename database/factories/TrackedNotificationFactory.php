@@ -2,11 +2,10 @@
 
 namespace NotificationTracker\Database\Factories;
 
-use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Str;
 use NotificationTracker\Models\TrackedNotification;
+use NotificationTracker\Tests\Fixtures\Notifications\CertifiedNotification;
 
 class TrackedNotificationFactory extends Factory
 {
@@ -19,7 +18,7 @@ class TrackedNotificationFactory extends Factory
 
     public function definition(): array
     {
-        $resetPasswordNotification = new ResetPassword(Str::random());
+        $resetPasswordNotification = new CertifiedNotification();
 
         return [
             'class' => $resetPasswordNotification::class,

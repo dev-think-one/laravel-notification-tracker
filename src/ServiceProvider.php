@@ -23,7 +23,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
 
             $this->commands([
-                //
+                // TODO: add truncate
             ]);
         }
     }

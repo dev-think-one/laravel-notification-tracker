@@ -6,9 +6,11 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Str;
 use JsonFieldCast\Casts\SimpleJsonField;
 use NotificationTracker\Database\Factories\TrackedChannelFactory;
+use NotificationTracker\Notification\Trackable;
 use NotificationTracker\NotificationTracker;
 
 /**
@@ -121,5 +123,67 @@ class TrackedChannel extends Model
             'last_click_at' => $date,
             'click_count'   => $this->click_count + 1,
         ]);
+    }
+
+    public function resendNotification(): bool
+    {
+        if (!$this->notification) {
+            return false;
+        }
+        $channel      = $this->channel;
+        $route        = unserialize($this->route);
+        $notification = unserialize($this->notification->data);
+
+        if (
+            !$channel                                ||
+            !$route                                  ||
+            !($notification instanceof Notification) ||
+            !($notification instanceof Trackable)
+        ) {
+            return false;
+        }
+
+        try {
+            \Illuminate\Support\Facades\Notification::route($channel, $route)
+                ->notify(
+                    $notification
+                        ->trackerMeta('sent_from_parent', [
+                            'class' => $this->getMorphClass(),
+                            'id'    => $this->getKey(),
+                        ])
+                        ->trackerMeta(function (\JsonFieldCast\Json\SimpleJsonField $meta, TrackedChannel $trackedChannel) {
+                            $meta->setData(array_merge(
+                                $this->meta->getRawData(),
+                                $meta->getRawData(),
+                            ));
+                        })
+                        ->notificationMeta(function (\JsonFieldCast\Json\SimpleJsonField $meta, TrackedNotification $trackedNotification) {
+                            $meta->setData(array_merge(
+                                $this->notification->meta->getRawData(),
+                                $meta->getRawData(),
+                            ));
+                        })
+                );
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function resendNotOpenedNotification(int|Carbon $waitSeconds = 2 * 24 * 60 * 60): bool
+    {
+        if (!$this->sent_at) {
+            return false;
+        }
+        if (!($waitSeconds instanceof Carbon)) {
+            $waitSeconds = $this->sent_at->addSeconds($waitSeconds);
+        }
+
+        if ($waitSeconds->greaterThan(Carbon::now())) {
+            return false;
+        }
+
+        return $this->resendNotification();
     }
 }
