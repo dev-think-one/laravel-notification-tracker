@@ -22,6 +22,7 @@ class TrackedChannel extends Model
     protected $guarded = [];
 
     protected $casts = [
+        'sent_at'        => 'datetime',
         'first_open_at'  => 'datetime',
         'last_open_at'   => 'datetime',
         'open_count'     => 'integer',
