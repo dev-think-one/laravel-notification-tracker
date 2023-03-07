@@ -17,8 +17,7 @@ class MailConverter
     public function __construct(
         protected TrackedChannel $tracker,
         protected Email          $email,
-    )
-    {
+    ) {
     }
 
     public function format()
@@ -26,7 +25,7 @@ class MailConverter
         $emailBody = $this->email->getBody();
         if (
             ($emailBody instanceof (AlternativePart::class)) ||
-            ($emailBody instanceof (MixedPart::class)) ||
+            ($emailBody instanceof (MixedPart::class))       ||
             ($emailBody instanceof (RelatedPart::class))
         ) {
             $newParts = [];
