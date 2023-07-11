@@ -1,17 +1,17 @@
 {
-    "name": "yaroslawww/laravel-notification-tracker",
+    "name": "think.studio/laravel-notification-tracker",
     "description": "Track status of notifications sent by application.",
     "keywords": [
         "laravel",
         "notification",
         "tracker"
     ],
-    "homepage": "https://github.com/yaroslawww/laravel-notification-tracker",
+    "homepage": "https://github.com/dev-think-one/laravel-notification-tracker",
     "license": "MIT",
     "authors": [
         {
             "name": "Yaroslav Georgitsa",
-            "email": "yaroslav.georgitsa@gmail.com",
+            "email": "yg@think.studio",
             "homepage": "https://github.com/yaroslawww",
             "role": "Developer"
         }

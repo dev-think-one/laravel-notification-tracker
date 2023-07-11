@@ -1,11 +1,11 @@
 # Laravel notification tracker
 
-![Packagist License](https://img.shields.io/packagist/l/yaroslawww/laravel-notification-tracker?color=%234dc71f)
-[![Packagist Version](https://img.shields.io/packagist/v/yaroslawww/laravel-notification-tracker)](https://packagist.org/packages/yaroslawww/laravel-notification-tracker)
-[![Total Downloads](https://img.shields.io/packagist/dt/yaroslawww/laravel-notification-tracker)](https://packagist.org/packages/yaroslawww/laravel-notification-tracker)
-[![Build Status](https://scrutinizer-ci.com/g/yaroslawww/laravel-notification-tracker/badges/build.png?b=main)](https://scrutinizer-ci.com/g/yaroslawww/laravel-notification-tracker/build-status/main)
-[![Code Coverage](https://scrutinizer-ci.com/g/yaroslawww/laravel-notification-tracker/badges/coverage.png?b=main)](https://scrutinizer-ci.com/g/yaroslawww/laravel-notification-tracker/?branch=main)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/yaroslawww/laravel-notification-tracker/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/yaroslawww/laravel-notification-tracker/?branch=main)
+![Packagist License](https://img.shields.io/packagist/l/think.studio/laravel-notification-tracker?color=%234dc71f)
+[![Packagist Version](https://img.shields.io/packagist/v/think.studio/laravel-notification-tracker)](https://packagist.org/packages/think.studio/laravel-notification-tracker)
+[![Total Downloads](https://img.shields.io/packagist/dt/think.studio/laravel-notification-tracker)](https://packagist.org/packages/think.studio/laravel-notification-tracker)
+[![Build Status](https://scrutinizer-ci.com/g/dev-think-one/laravel-notification-tracker/badges/build.png?b=main)](https://scrutinizer-ci.com/g/dev-think-one/laravel-notification-tracker/build-status/main)
+[![Code Coverage](https://scrutinizer-ci.com/g/dev-think-one/laravel-notification-tracker/badges/coverage.png?b=main)](https://scrutinizer-ci.com/g/dev-think-one/laravel-notification-tracker/?branch=main)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/dev-think-one/laravel-notification-tracker/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/dev-think-one/laravel-notification-tracker/?branch=main)
 
 Track status of notifications sent by application.
 
@@ -14,7 +14,7 @@ Track status of notifications sent by application.
 Install the package via composer:
 
 ```bash
-composer require yaroslawww/laravel-notification-tracker
+composer require think.studio/laravel-notification-tracker
 ```
 
 You can publish the config file with:
@@ -27,16 +27,16 @@ php artisan vendor:publish --provider="NotificationTracker\ServiceProvider" --ta
 
 ```php
 public function register()
-    {
-        // cancel default migrations files
-        \NotificationTracker\NotificationTracker::ignoreMigrations();
-        // cancel default web routes implementation
-        \NotificationTracker\NotificationTracker::ignoreRoutes();
-        // change class names what stored in database
-        \NotificationTracker\NotificationTracker::classMap([
-            'registration_confirmation' => RegistrationNotification::class,
-        ]);
-    }
+{
+    // cancel default migrations files
+    \NotificationTracker\NotificationTracker::ignoreMigrations();
+    // cancel default web routes implementation
+    \NotificationTracker\NotificationTracker::ignoreRoutes();
+    // change class names what stored in database
+    \NotificationTracker\NotificationTracker::classMap([
+        'registration_confirmation' => \App\Notifications\RegistrationNotification::class,
+    ]);
+}
 ```
 
 ## Usage
