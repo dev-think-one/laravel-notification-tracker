@@ -54,6 +54,13 @@ use NotificationTracker\Notification\Trackable;
 class CertifiedNotification extends Notification implements ShouldQueue, Trackable
 {
     use Queueable, HasTracker;
+    
+    public Document $document;
+    
+    public function __construct(Document $document)
+    {
+        $this->document = $document;
+    }
 
     public function via($notifiable = null)
     {
@@ -66,7 +73,13 @@ class CertifiedNotification extends Notification implements ShouldQueue, Trackab
 
         $message->line('Thank you!');
 
-        return $this->tracker()->trackMailMessage($message, $notifiable);
+        // Initialise tracker
+        return $this->tracker()
+            // You can add metadata to channel row. Using callback, or passing key->value
+            ->trackerMeta(fn(\JsonFieldCast\Json\AbstractMeta $meta, $trackedChannel) => $meta->toMorph('document', $this->document))
+            ->trackerMeta('document_category', $this->document->category?->name)
+            // Save tracked data
+            ->trackMailMessage($message, $notifiable);
     }
 
     public function toCustom($notifiable)
