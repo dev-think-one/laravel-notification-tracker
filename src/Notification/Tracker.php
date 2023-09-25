@@ -37,10 +37,7 @@ class Tracker
         }
 
         if ($notifiable instanceof Model) {
-            $this->trackedChannel->meta->setAttribute('receiver', [
-                'class' => $notifiable->getMorphClass(),
-                'id'    => $notifiable->getKey(),
-            ]);
+            $this->trackedChannel->meta->toMorph('receiver', $notifiable);
         }
 
         $this->trackedChannel->fill([

@@ -59,6 +59,24 @@ class NotificationTracker
     }
 
     /**
+     * @param string $class
+     * @return string
+     */
+    public static function getMapAlias(string $class): string
+    {
+        $morphMap = static::$classMap;
+
+        if (
+            !empty($morphMap) &&
+            ($found = array_search($class, $morphMap, true))
+        ) {
+            return $found;
+        }
+
+        return $class;
+    }
+
+    /**
      * @param string $key
      * @param string $modelClass
      * @return class-string<static>

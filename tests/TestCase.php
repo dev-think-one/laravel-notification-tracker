@@ -13,6 +13,7 @@ class TestCase extends Orchestra
     {
         return [
             \NotificationTracker\ServiceProvider::class,
+            \NotificationTracker\Tests\Fixtures\TestServiceProvider::class,
         ];
     }
 

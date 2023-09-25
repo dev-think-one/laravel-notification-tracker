@@ -147,10 +147,9 @@ class TrackedChannel extends Model
             \Illuminate\Support\Facades\Notification::route($channel, $route)
                 ->notify(
                     $notification
-                        ->trackerMeta('sent_from_parent', [
-                            'class' => $this->getMorphClass(),
-                            'id'    => $this->getKey(),
-                        ])
+                        ->trackerMeta(function (\JsonFieldCast\Json\SimpleJsonField $meta, TrackedChannel $trackedChannel) {
+                            $meta->toMorph('sent_from_parent', $this);
+                        })
                         ->trackerMeta(function (\JsonFieldCast\Json\SimpleJsonField $meta, TrackedChannel $trackedChannel) {
                             $meta->setData(array_merge(
                                 $this->meta->getRawData(),

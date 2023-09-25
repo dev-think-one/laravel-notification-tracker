@@ -19,13 +19,7 @@ trait HasTracker
 
     public function getClassAlias(): string
     {
-        $morphMap = NotificationTracker::classMap();
-
-        if (!empty($morphMap) && in_array(static::class, $morphMap)) {
-            return array_search(static::class, $morphMap, true);
-        }
-
-        return static::class;
+        return NotificationTracker::getMapAlias(static::class);
     }
 
     public function trackerMeta(string|\Closure $key = null, mixed $value = null): static
